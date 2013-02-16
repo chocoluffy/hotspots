@@ -1,0 +1,213 @@
+/*Sassy Siren 1140 Grid*/
+/*Version 1.0*/
+/*1/1/13*/
+/* MAIN STYLE SHEET */
+/* <link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+/* Eric Meyer's Reset */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+/*End Reset*/
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  *behavior: url(../js/polyfills/boxsizing.htc); }
+
+/*Siren Grid System V2.1*/
+/*SASS VERSION*/
+/*1/1/21*/
+/*www.sasbranding.com*/
+/*Variables*/
+/* Widths and Column Count */
+/* Variable to specify full width */
+/* Number of columns */
+/* Calculate base width of columns */
+/* Break Points */
+/* Maximum row width */
+/* The breakpoint to snap to single column layout */
+/* Gutters */
+/* Full width of gutters */
+/* Added padding */
+/* Mixin in for the basic column model */
+/* Main container and Rows */
+.container {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-right: 0;
+  margin-left: 0;
+  overflow: hidden; }
+
+.row {
+  width: 100%;
+  max-width: 1140px;
+  min-width: 727px;
+  overflow: hidden;
+  margin-left: auto;
+  margin-right: auto;
+  /*Nested row*/ }
+  .row .row {
+    min-width: 0;
+    margin-right: 0;
+    margin-left: 0; }
+
+/*Gutters and other defaults*/
+[class*='col_'] {
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-left: 0;
+  margin-right: 0;
+  float: left;
+  min-height: 1px; }
+
+/* Create columns */
+/* CLASS NAME RULE : .col_{column number} */
+.col_1 {
+  width: 8.33333%; }
+
+.col_2 {
+  width: 16.66667%; }
+
+.col_3 {
+  width: 25%; }
+
+.col_4 {
+  width: 33.33333%; }
+
+.col_5 {
+  width: 41.66667%; }
+
+.col_6 {
+  width: 50%; }
+
+.col_7 {
+  width: 58.33333%; }
+
+.col_8 {
+  width: 66.66667%; }
+
+.col_9 {
+  width: 75%; }
+
+.col_10 {
+  width: 83.33333%; }
+
+.col_11 {
+  width: 91.66667%; }
+
+.col_12 {
+  width: 100%; }
+
+/*Images, videos, objects, and embeds should be full widht of column*/
+img, object, embed, iframe {
+  max-width: 100%; }
+
+img {
+  height: auto; }
+
+/*When the screens begin to shrink*/
+@media handheld, only screen and (max-width: 767px) {
+  .container {
+    padding-left: 5px;
+    padding-right: 5px; }
+
+  .row {
+    width: 100%;
+    min-width: 0;
+    padding-left: 0;
+    padding-right: 0; }
+    .row [class*='col_'] {
+      width: 100%;
+      float: none;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 5px;
+      padding-right: 5px; }
+
+  .row .row [class*='col_'] {
+    position: relative;
+    float: left; }
+  .row .row .col_1 {
+    width: 8.33333%; }
+  .row .row .col_2 {
+    width: 16.66667%; }
+  .row .row .col_3 {
+    width: 25%; }
+  .row .row .col_4 {
+    width: 33.33333%; }
+  .row .row .col_5 {
+    width: 41.66667%; }
+  .row .row .col_6 {
+    width: 50%; }
+  .row .row .col_7 {
+    width: 58.33333%; }
+  .row .row .col_8 {
+    width: 66.66667%; }
+  .row .row .col_9 {
+    width: 75%; }
+  .row .row .col_10 {
+    width: 83.33333%; }
+  .row .row .col_11 {
+    width: 91.66667%; }
+  .row .row .col_12 {
+    width: 100%; } }
+/*fixes*/
+/*A combination of Amazium's solution and code found at http://www.webtoolkit.info/css-clearfix.html*/
+.clearfix:before, .clearfix:after, .row:before, .row:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0; }
+
+.clearfix {
+  display: inline-block;
+  zoom: 1; }
+
+.clear, .row:after, .clarfix:after {
+  clear: both; }
+
+html[xmlns] .clearfix {
+  display: block; }
+
+* html .clearfix {
+  height: 1%; }
