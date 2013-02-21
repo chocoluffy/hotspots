@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>HotSpots</title>
+        <meta name="description" content="Hot Spots">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/stylesheets/normalize.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="/stylesheets/h5bp.css" type="text/css" media="screen" />
+        <!--[if lte IE 9]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" /><![endif]-->
+        <link rel="stylesheet" href="/stylesheets/siren.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="/stylesheets/print.css" type="text/css" media="print" />
+        <link rel="stylesheet" href="/stylesheets/jquery-ui.min.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" />
+    </head>
+    <body>
+        <% yield_content :body %>
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="http://code.jquery.com/jquery-migrate-1.1.0.min.js"></script>
+        <script type="text/javascript" src="/javascripts/jquery-ui.min.js"></script>
+        <% yield_content :bottom %>
+    </body>
+</html>

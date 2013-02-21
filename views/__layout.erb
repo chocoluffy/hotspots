@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  	<meta charset="utf-8" />
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tour Planner!</title>
+    <link rel="stylesheet" href="/stylesheets/siren.css" type="text/css" media="screen,projection" />
+    <link rel="stylesheet" href="/stylesheets/print.css" type="text/css" media="print" />
+    <link rel="stylesheet" href="/stylesheets/style.css" type="text/css" media="screen" />
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  	<script src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&sensor=true"></script>
+
+    <% yield_content :head %>
+  </head>
+  <body>
+  	<div class="header container">
+  		<h1 class="brand"><a href="/">TourPlanner</a></h1>
+  	</div>
+  	<% yield_content :body %>
+  	<% yield_content :bottom %>
+ </body>
+</html>

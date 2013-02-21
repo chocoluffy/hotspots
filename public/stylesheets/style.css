@@ -1,0 +1,74 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300);
+html, body {
+  font-family: "Roboto Condensed", sans-serif;
+  color: #fff;
+  width: 100%;
+  height: 100%;
+  background: #acbdd3 url("../images/background.jpg") no-repeat left top;
+  background-size: cover;
+  background-attachment: fixed; }
+
+.main {
+  font-size: 36px;
+  text-shadow: 2px 2px 2px #111111;
+  text-align: center;
+  padding: 5% 0; }
+
+.results {
+  min-height: 300px;
+  position: relative;
+  font-size: 18px; }
+
+.list-results li {
+  line-height: 1.3em;
+  min-height: 100px;
+  margin: 30px 0; }
+.list-results h3 {
+  margin-bottom: 10px;
+  font-size: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6); }
+.list-results a {
+  text-decoration: none;
+  color: #FFE88A; }
+  .list-results a:hover {
+    color: #fff; }
+
+small {
+  font-size: 0.8em; }
+
+#results-container {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  max-width: 60%;
+  margin: 0 20%; }
+
+.results-options select {
+  margin-right: 20px; }
+
+input {
+  font-size: 24px;
+  padding-left: 5px;
+  width: 200px;
+  margin: 5px; }
+
+#city-spinner {
+  display: inline-block; }
+
+#results-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50px; }
+
+.weather-icon {
+  width: 100px;
+  height: auto;
+  float: right; }
+
+@media (max-width: 767px) {
+  #results-container {
+    max-width: 100%;
+    margin: 0; } }
+@media (max-width: 320px) {
+  .weather-icon {
+    display: none; } }

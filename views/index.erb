@@ -1,0 +1,47 @@
+
+<% content_for :body do %>
+	<div class="container">
+		<div class="row main">
+			find the hottest cities near <div id="city-spinner"><input type="text" id="city" placeholder="city name" /></div>
+		</div>
+		<div class="row results">
+			<div id="results-spinner"></div>
+			<div id="results-container" hidden>
+				<div class="results-options row">
+					<label for="sort-by">Sort by:</label>
+					<select name="sort-by">
+						<option value="high" selected>High</option>
+						<option value="low">Low</option>
+					</select>
+					<label for="weather-from">Weather from:</label>
+					<select name="weather-from" id="weather-from">
+						<option value="1" selected>today</option>
+						<option value="2">tomorrow</option>
+						<option value="7">a week from now</option>
+					</select>
+				</div>
+				<div class="results-content row">
+				</div>
+			</div>
+		</div>
+	</div>
+<% end %>
+
+<% content_for :bottom do %>
+<script src="/javascripts/spin.min.js"></script>
+<script type="text/javascript" src="/javascripts/mustache.js"></script>
+<script src="/javascripts/script.js"></script>
+<script type="text/template" id="weather-description">
+  	<ul class="list-results">
+  		{{#items}}
+  		<li>
+  			<h3>{{name}}, {{state}}<small> (0 km away)</small></h3>
+  			<img src="http://img.weather.weatherbug.com/forecast/icons/localized/500x420/en/trans/cond000.png" class="weather-icon" />
+  			<span>Sunny. High: 39 &deg;F, Low: 32 &deg;F</span>
+  			<p>description</p>
+  			<span>Links: <a href="{{maps}}" target="_blank">Google Maps</a> | <a href="{{wiki}}" target="_blank">Wikipedia</a></span>
+  		</li>
+  		{{/items}}
+  	</ul>
+</script>
+<% end %>
