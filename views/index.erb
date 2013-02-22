@@ -9,15 +9,15 @@
 			<div id="results-container" hidden>
 				<div class="results-options row">
 					<label for="sort-by">Sort by:</label>
-					<select name="sort-by">
+					<select name="sort-by" id="sort-by">
 						<option value="high" selected>High</option>
 						<option value="low">Low</option>
+						<option value="distance">Distance</option>
 					</select>
-					<label for="weather-from">Weather from:</label>
-					<select name="weather-from" id="weather-from">
-						<option value="1" selected>today</option>
-						<option value="2">tomorrow</option>
-						<option value="7">a week from now</option>
+					<label for="order">Order by:</label>
+					<select name="order-by" id="order-by">
+						<option value="desc" selected>desc</option>
+						<option value="asc">asc</option>
 					</select>
 				</div>
 				<div class="results-content row">
@@ -30,15 +30,15 @@
 <% content_for :bottom do %>
 <script src="/javascripts/spin.min.js"></script>
 <script type="text/javascript" src="/javascripts/mustache.js"></script>
-<script src="/javascripts/script.js"></script>
+<script src="/javascripts/scripts.js"></script>
 <script type="text/template" id="weather-description">
   	<ul class="list-results">
   		{{#items}}
   		<li>
-  			<h3>{{name}}, {{state}}<small> (0 km away)</small></h3>
-  			<img src="http://img.weather.weatherbug.com/forecast/icons/localized/500x420/en/trans/cond000.png" class="weather-icon" />
-  			<span>Sunny. High: 39 &deg;F, Low: 32 &deg;F</span>
-  			<p>description</p>
+  			<h3>{{city.name}}, {{city.state}}<small> ({{city.distance}} km away)</small></h3>
+  			<img src="http://img.weather.weatherbug.com/forecast/icons/localized/500x420/en/trans/{{icon}}.png" class="weather-icon" />
+  			<span><strong>{{desc}}</strong>. High: {{high}} &deg;F, Low: {{low}} &deg;F</span>
+  			<p>{{pred}}</p>
   			<span>Links: <a href="{{maps}}" target="_blank">Google Maps</a> | <a href="{{wiki}}" target="_blank">Wikipedia</a></span>
   		</li>
   		{{/items}}
