@@ -12,7 +12,6 @@ function getPostalCodes(data, spinner) {
     dataType: "json",
     data: data,
     success: function( data ) {
-      console.log("hello");
     	if (data.error) {
         alert(data.error);
       } else {
@@ -122,7 +121,7 @@ $(function() {
       // resort the results
       if(val === "temp") {
         results.sort(function(a,b){
-          return one_temp ? (a.temp - b.temp) : (a.high - b.high);
+          return (a.one_temp && b.one_temp) ? (a.temp - b.temp) : (a.high - b.high);
         });
       } else if (val == "distance") {
         results.sort(function(a,b){
