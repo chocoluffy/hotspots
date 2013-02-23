@@ -62,13 +62,6 @@ helpers do
 		end
 	end
 
-	def deg2rad(x) 
-		x * PI / 180
-	end
-	
-	def night?(date)
-    	!((6...21).include? date.hour)
-	end
 end
 
 get '/' do
@@ -78,15 +71,20 @@ end
 post '/getweather' do 
 
 	content_type :json
-	postal_codes = get_postal_codes(params[:lat], params[:lng])
+	postal_codes = get_postal_codes(params[:lat], params[:lng]) # query geonames
 
 	if postal_codes.empty? or postal_codes.nil?
 		{ :error => "Oops! That is not a valid city. Please try again." }.to_json
 	else
+		# Create a quad tree
 		qt = QuadTree.new(Vector.new(-180,90), Vector.new(180,-90))
+
+		# sort the postal codes result by name
 		postal_codes.sort! {|a,b| a['placeName'].downcase <=> b['placeName'].downcase}
 		previous = postal_codes[0]['placeName']
+
 		postal_codes.each do |item|
+			# skip if the name is empty or if it is the same name as the previous entry
 			next if item['placeName'].empty? or previous == item['placeName']
 
 			lat = item['lat'].to_f
@@ -100,8 +98,10 @@ post '/getweather' do
 				:lng => item['lng'].to_f
 			}
 
-			# 0.09 is equal to 10km, assuming that 1 deg = 111.111 km (naive implementation, I know)
-			offset = 0.09
+			# 0.045 is equal to 5km, assuming that 1 deg = 111.111 km (naive implementation, I know)
+			# this code creates a 10km by 10km square around the current lat, lng. We will query the 
+			# quad tree to see if there are any points that already lie in this region.
+			offset = 0.045
 			payloads = qt.payloads_in_region(
 				Vector.new(lng - offset, lat + offset), Vector.new(lng + offset, lat - offset))
 
@@ -115,41 +115,47 @@ post '/getweather' do
 			previous = item['placeName']
 		end
 
+		# cities are now grouped by points in the Quad tree. Now create a hash based on the first 
+		# postal code of a city at a point. This is easier for querying weatherbug.
 		pcodes_hash = Hash[qt.get_contained[:payloads].map{ |x| [x.data[0][:postalcode], x.data] }]
 		ordered_pcodes = pcodes_hash.keys
+		weather = get_weather(ordered_pcodes) # query weatherbug
 
-		weather = get_weather(ordered_pcodes)
-
-		night = night?(Time.now)
-		weather_heap = Containers::MinHeap.new
+		weather_heap = Containers::MinHeap.new # create a min heap
 
 		if weather.is_a?(Array)
 			weather.each_with_index do |item, index|
 				if forecast = item['forecastList'][0]
-					high = forecast['high'].to_i
-					if weather_heap.size < 10 or weather_heap.min[:high] < high
+					key = 	if forecast['high'].nil?
+								forecast['low']
+							else
+								forecast['high']
+							end
+					# add the element if the heap size is less than 10 or if the temperature is 
+					# higher than the smallest temperature in the heap
+					if weather_heap.size < 10 or weather_heap.min[:key] < key.to_i
 
-						weather_heap.pop if weather_heap.size >= 10 and weather_heap.min[:high] < high
+						# remove the heap min if it is smaller than the current temp
+						weather_heap.pop if weather_heap.size >= 10 and weather_heap.min[:key] < key.to_i
 
-						if night and forecast['hasNight']
-						# use the night forecast
-							desc = forecast['nightDesc']
-							pred = forecast['nightPred']
-							icon = forecast['nightIcon']
-						else
-						# use the day forecast
+						# remove relevant info from weatherbug
+						if forecast['hasDay']
 							desc = forecast['dayDesc']
 							pred = forecast['dayPred']
 							icon = forecast['dayIcon']
+						else
+							desc = forecast['nightDesc']
+							pred = forecast['nightPred']
+							icon = forecast['nightIcon']
 						end
-
 						pcode = ordered_pcodes[index]
 						pcodes_hash[pcode].each do |p|
 							if weather_heap.size < 10
-								weather_heap.push(high, {
+								weather_heap.push(key.to_i, {
+									:key => key.to_i,
 									:city => p,
-									:high => high,
-									:low => forecast['low'].to_i,
+									:high => forecast['high'],
+									:low => forecast['low'],
 									:desc => desc,
 									:pred => pred,
 									:icon => icon
@@ -161,6 +167,8 @@ post '/getweather' do
 			end
 
 			sorted_weather = []
+
+			# extract each min from the heap to get the sorted order
 			while not weather_heap.empty?
 				sorted_weather.unshift(weather_heap.pop)
 			end

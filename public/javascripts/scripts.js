@@ -17,7 +17,18 @@ function getPostalCodes(data, spinner) {
         alert(data.error);
       } else {
         spinner.stop();
-        results = data.results;
+        results = $.map(data.results, function(item) {
+          if (item.high === null || item.low === null) {
+            item.one_temp = true;
+            item.temp = (item.high != null) ? item.high : item.low;
+          } else {
+            item.two_temps = true;
+          }
+          var query = item.city.name + "+" + item.city.state;
+          item.maps = "https://maps.google.com/?q=" + query.replace(" ", "+");
+          item.wiki = "http://en.wikipedia.org/wiki/Special:Search/" + item.city.name.replace(" ", "_");
+          return item;
+        });
         displayWeather(data.results);
       }
     }
@@ -27,19 +38,13 @@ function getPostalCodes(data, spinner) {
 
 function displayWeather(weathers){
   $(".results-content").empty();
-	var p = {}
-	p.items = $.map(weathers, function(item) {
-		var query = item.city.name + "+" + item.city.state;
-		item.maps = "https://maps.google.com/?q=" + query.replace(" ", "+");
-		item.wiki = "http://en.wikipedia.org/wiki/Special:Search/" + item.city.name.replace(" ", "_");
-		return item;
-	});
+	var p = {"items" : weathers}
   var html = Mustache.to_html(Templates.weatherDesc, p);
   $(".results-content").append(html);
   $("#results-container").fadeIn("slow");
 }
 
-var curr_sort = "high";
+var curr_sort = "temp";
 var curr_order = "desc";
 var results = [];
 
@@ -115,13 +120,9 @@ $(function() {
     if(val != curr_sort && results) {
       curr_sort = val;
       // resort the results
-      if(val === "high") {
+      if(val === "temp") {
         results.sort(function(a,b){
-          return a.high - b.high;
-        });
-      } else if (val == "low") {
-        results.sort(function(a,b){
-          return a.low - b.low;
+          return one_temp ? (a.temp - b.temp) : (a.high - b.high);
         });
       } else if (val == "distance") {
         results.sort(function(a,b){
@@ -142,6 +143,4 @@ $(function() {
       displayWeather(results);
     }
   });
-
-
 });

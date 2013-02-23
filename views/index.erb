@@ -10,8 +10,7 @@
 				<div class="results-options row">
 					<label for="sort-by">Sort by:</label>
 					<select name="sort-by" id="sort-by">
-						<option value="high" selected>High</option>
-						<option value="low">Low</option>
+						<option value="temp" selected>Temperature</option>
 						<option value="distance">Distance</option>
 					</select>
 					<label for="order">Order by:</label>
@@ -37,7 +36,7 @@
   		<li>
   			<h3>{{city.name}}, {{city.state}}<small> ({{city.distance}} km away)</small></h3>
   			<img src="http://img.weather.weatherbug.com/forecast/icons/localized/500x420/en/trans/{{icon}}.png" class="weather-icon" />
-  			<span><strong>{{desc}}</strong>. High: {{high}} &deg;F, Low: {{low}} &deg;F</span>
+  			<span><strong>{{desc}}</strong>. {{#two_temps}}High: <span class="temp">{{high}}</span> &deg;<span class="unit">F</span>, Low: <span class="temp">{{low}}</span> &deg;<span class="unit">F</span>{{/two_temps}}{{#one_temp}}<span class="temp">{{temp}}</span> &deg;<span class="unit">F</span>{{/one_temp}}</span>
   			<p>{{pred}}</p>
   			<span>Links: <a href="{{maps}}" target="_blank">Google Maps</a> | <a href="{{wiki}}" target="_blank">Wikipedia</a></span>
   		</li>
