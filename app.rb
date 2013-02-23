@@ -158,7 +158,8 @@ post '/getweather' do
 									:low => forecast['low'],
 									:desc => desc,
 									:pred => pred,
-									:icon => icon
+									:icon => icon,
+									:day => forecast['dayTitle']
 								})
 							end
 						end
