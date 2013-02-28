@@ -7,5 +7,7 @@ Bundler.require
 Sass::Plugin.options[:template_location] = 'public/stylesheets'
 use Sass::Plugin::Rack
 
+$stdout.sync = true
+
 require "./app"
 run Sinatra::Application

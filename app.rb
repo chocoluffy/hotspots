@@ -4,6 +4,7 @@ require 'sass'
 require 'json'
 require 'net/http'
 require 'algorithms'
+require 'logger'
 
 require File.dirname(__FILE__) + '/lib/quadtree'
 require File.dirname(__FILE__) + '/lib/vector'
