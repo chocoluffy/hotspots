@@ -37,7 +37,7 @@ helpers do
 			return JSON.parse(res.body)['postalCodes']
 		else 
 			puts res.body
-			return {}
+			return {:error => res.body}
 		end
 	end
 
@@ -91,8 +91,8 @@ post '/getweather' do
 	content_type :json
 	postal_codes = get_postal_codes(params[:lat], params[:lng]) # query geonames
 
-	if postal_codes.empty? or postal_codes.nil?
-		{ :error => "Oops! That is not a valid city. Please try again." }.to_json
+	if postal_codes.has_key?(:error)
+		return postal_codes.to_json
 	else
 		# Create a quad tree
 		qt = QuadTree.new(Vector.new(-180,90), Vector.new(180,-90))
