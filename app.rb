@@ -91,7 +91,7 @@ post '/getweather' do
 	content_type :json
 	postal_codes = get_postal_codes(params[:lat], params[:lng]) # query geonames
 
-	if postal_codes.has_key?(:error)
+	if not postal_codes.is_a?(Array)
 		return postal_codes.to_json
 	else
 		# Create a quad tree
