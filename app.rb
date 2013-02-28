@@ -50,15 +50,32 @@ helpers do
 
 		uri = URI(WEATHERBUG_URL)
 
-		zips = cities.join(",")
-		params[:zip] = zips
-		uri.query = URI.encode_www_form(params)
-		res = Net::HTTP.get_response(uri)
-		if res.is_a?(Net::HTTPSuccess)
-			return JSON.parse(res.body)
+		if cities.length < 100
+			zips = cities.join(",")
+			params[:zip] = zips
+			uri.query = URI.encode_www_form(params)
+			res = Net::HTTP.get_response(uri)
+			if res.is_a?(Net::HTTPSuccess)
+				return JSON.parse(res.body)
+			else 
+				puts res.body
+				return res.body
+			end
 		else 
-			puts res.body
-			return res.body
+			result = []
+			sliced_zips = cities.each_slice(100).to_a
+			sliced_zips.each do |slice|
+				params[:zip] = slice.join(",")
+				uri.query = URI.encode_www_form(params)
+				res = Net::HTTP.get_response(uri)
+				if res.is_a?(Net::HTTPSuccess)
+					result.concat(JSON.parse(res.body))
+				else 
+					puts "Yikes, something went wrong with Weatherbug:"
+					puts res.body
+				end
+			end
+			return result
 		end
 	end
 
@@ -119,11 +136,12 @@ post '/getweather' do
 		# postal code of a city at a point. This is easier for querying weatherbug.
 		pcodes_hash = Hash[qt.get_contained[:payloads].map{ |x| [x.data[0][:postalcode], x.data] }]
 		ordered_pcodes = pcodes_hash.keys
+		puts ordered_pcodes.length
 		weather = get_weather(ordered_pcodes) # query weatherbug
 
 		weather_heap = Containers::MinHeap.new # create a min heap
 
-		if weather.is_a?(Array)
+		if weather.is_a?(Array) and weather.length > 0
 			weather.each_with_index do |item, index|
 				if forecast = item['forecastList'][0]
 					key = 	if forecast['high'].nil?
@@ -175,7 +193,7 @@ post '/getweather' do
 			end
 			{ :results => sorted_weather }.to_json
 		else
-			{ :error => "Oops! The query can handle only so many cities :(" }.to_json
+			{ :error => "Oops! Something went wrong :( check the logs, yo" }.to_json
 		end
 	end
 end
