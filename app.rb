@@ -142,6 +142,7 @@ post '/getweather' do
 		weather_heap = Containers::MinHeap.new # create a min heap
 
 		if weather.is_a?(Array) and weather.length > 0
+			puts "Weatherbug successful"
 			weather.each_with_index do |item, index|
 				if forecast = item['forecastList'][0]
 					key = 	if forecast['high'].nil?

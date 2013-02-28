@@ -12,10 +12,10 @@ function getPostalCodes(data, spinner) {
     dataType: "json",
     data: data,
     success: function( data ) {
+        spinner.stop();
     	if (data.error) {
         alert(data.error);
       } else {
-        spinner.stop();
         results = $.map(data.results, function(item) {
           if (item.high === null || item.low === null) {
             item.one_temp = true;
