@@ -63,7 +63,7 @@ helpers do
 			end
 		else 
 			result = []
-			sliced_zips = cities.each_slice(100).to_a
+			sliced_zips = cities.each_slice(99).to_a
 			sliced_zips.each do |slice|
 				params[:zip] = slice.join(",")
 				uri.query = URI.encode_www_form(params)
@@ -73,6 +73,7 @@ helpers do
 				else 
 					puts "Yikes, something went wrong with Weatherbug:"
 					puts res.body
+					result = res.body
 				end
 			end
 			return result
@@ -136,13 +137,12 @@ post '/getweather' do
 		# postal code of a city at a point. This is easier for querying weatherbug.
 		pcodes_hash = Hash[qt.get_contained[:payloads].map{ |x| [x.data[0][:postalcode], x.data] }]
 		ordered_pcodes = pcodes_hash.keys
-		puts ordered_pcodes.length
+		puts "# of requests to weatherbug: " + ordered_pcodes.length.to_s
 		weather = get_weather(ordered_pcodes) # query weatherbug
 
 		weather_heap = Containers::MinHeap.new # create a min heap
 
 		if weather.is_a?(Array) and weather.length > 0
-			puts "Weatherbug successful"
 			weather.each_with_index do |item, index|
 				if forecast = item['forecastList'][0]
 					key = 	if forecast['high'].nil?
@@ -194,7 +194,7 @@ post '/getweather' do
 			end
 			{ :results => sorted_weather }.to_json
 		else
-			{ :error => "Oops! Something went wrong :( check the logs, yo" }.to_json
+			{ :error => "Oops! Something went wrong: " + weather.to_s }.to_json
 		end
 	end
 end
